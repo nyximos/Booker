@@ -16,4 +16,14 @@ public class MemberController {
         System.out.println("content = " + testDTO.getContent());
         return "Hello World";
     }
+
+    @GetMapping("/user")
+    public String user() {
+        return "user";
+    }
+
+    @GetMapping("/admin")
+    public String addmin() {
+        return "admin";
+    }
 }

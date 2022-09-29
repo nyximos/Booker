@@ -3,14 +3,31 @@ import { ref } from "vue";
 
 import axios from "axios";
 
-const title = ref("");
-const content = ref("");
+const username = ref("");
+const password = ref("");
 
-const write = function () {
-  axios.post("/api/test", {
-    title: title.value,
-    content: content.value,
-  });
+const login = function () {
+  const data = {
+    username: username.value,
+    password: password.value,
+  };
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  axios
+    .post("/api/login", data, config)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      // window.location.href = "/";
+
+      console.log(err);
+    });
 };
 </script>
 
@@ -18,13 +35,13 @@ const write = function () {
   <div>
     <p>안녕하세요</p>
     <div>
-      <input type="text" name="title" v-model="title" />
+      <input type="text" name="username" v-model="username" />
     </div>
     <div>
-      <input type="text" name="content" v-model="content" />
+      <input type="password" name="password" v-model="password" />
     </div>
     <div>
-      <button @click="write()">완료</button>
+      <button @click="login()">완료</button>
     </div>
   </div>
 </template>

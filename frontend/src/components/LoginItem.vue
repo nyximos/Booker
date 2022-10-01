@@ -21,11 +21,9 @@ const login = function () {
   axios
     .post("/api/login", data, config)
     .then((res) => {
-      console.log(res);
+      window.location.href = "/";
     })
     .catch((err) => {
-      // window.location.href = "/";
-
       console.log(err);
     });
 };

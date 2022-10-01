@@ -24,7 +24,10 @@ const login = function () {
       window.location.href = "/";
     })
     .catch((err) => {
-      console.log(err);
+      const url = decodeURIComponent(err.request.responseURL);
+      const afterStr = url.split("=");
+      const message = afterStr[1].replaceAll("+", " ");
+      alert(message);
     });
 };
 </script>

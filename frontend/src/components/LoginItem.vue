@@ -42,7 +42,10 @@ const login = function () {
       <input type="password" name="password" v-model="password" />
     </div>
     <div>
-      <button @click="login()">완료</button>
+      <button @click="login()">로그인</button>
+    </div>
+    <div>
+      <a href="/api/oauth2/authorization/google">구글 로그인</a>
     </div>
   </div>
 </template>

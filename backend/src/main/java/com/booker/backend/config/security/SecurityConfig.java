@@ -2,6 +2,8 @@ package com.booker.backend.config.security;
 
 import com.booker.backend.config.security.auth.AuthFailureHandler;
 import com.booker.backend.config.security.auth.AuthSuccessHandler;
+import com.booker.backend.config.security.oauth.OAuth2SuccessHandler;
+import com.booker.backend.config.security.oauth.PrincipalOauth2UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ public class SecurityConfig {
 
     private final AuthFailureHandler authFailureHandler;
     private final AuthSuccessHandler authSuccessHandler;
+    private final PrincipalOauth2UserService principalOauth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -38,6 +42,12 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .failureHandler(authFailureHandler)
                 .successHandler(authSuccessHandler);
+        http.oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService)
+                .and()
+                .successHandler(oAuth2SuccessHandler);
         return http.build();
     }
 }

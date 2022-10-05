@@ -36,7 +36,7 @@ const login = function () {
   <div>
     <p>안녕하세요</p>
     <div>
-      <input type="text" name="username" v-model="username" />
+      <input type="email" name="username" v-model="username" />
     </div>
     <div>
       <input type="password" name="password" v-model="password" />
@@ -45,6 +45,7 @@ const login = function () {
       <button @click="login()">로그인</button>
     </div>
     <div>
+      <RouterLink to="/join">회원가입</RouterLink>
       <a href="/api/oauth2/authorization/google">구글 로그인</a>
     </div>
   </div>

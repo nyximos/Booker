@@ -2,6 +2,7 @@ package com.booker.backend.config.security;
 
 import com.booker.backend.config.security.auth.AuthFailureHandler;
 import com.booker.backend.config.security.auth.AuthSuccessHandler;
+import com.booker.backend.config.security.oauth.OAuth2FailureHandler;
 import com.booker.backend.config.security.oauth.OAuth2SuccessHandler;
 import com.booker.backend.config.security.oauth.PrincipalOauth2UserService;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // IoC bean을 등록
@@ -24,11 +24,8 @@ public class SecurityConfig {
     private final AuthSuccessHandler authSuccessHandler;
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
-    @Bean
-    public BCryptPasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +44,8 @@ public class SecurityConfig {
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
                 .and()
-                .successHandler(oAuth2SuccessHandler);
+                .successHandler(oAuth2SuccessHandler)
+                .failureHandler(oAuth2FailureHandler);
         return http.build();
     }
 }

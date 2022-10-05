@@ -1,8 +1,10 @@
 package com.booker.backend.service;
 
+import com.booker.backend.config.security.auth.PrincipalDetails;
 import com.booker.backend.domain.Member;
 import com.booker.backend.domain.MemberRole;
 import com.booker.backend.dto.member.JoinDTO;
+import com.booker.backend.dto.member.SocialJoinDTO;
 import com.booker.backend.dto.response.Message;
 import com.booker.backend.dto.response.StatusEnum;
 import com.booker.backend.repository.MemberRepository;
@@ -31,6 +33,15 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         memberRepository.save(member);
+
+        return new Message(StatusEnum.OK, "성공");
+    }
+
+    @Override
+    @Transactional
+    public Message socialJoin(PrincipalDetails principalDetails, SocialJoinDTO socialJoinDTO) {
+        Member member = memberRepository.findByUsername(principalDetails.getUsername());
+        member.joinSocialAccount(socialJoinDTO.getNickname(),createEncPassword(socialJoinDTO.getPassword()));
 
         return new Message(StatusEnum.OK, "성공");
     }

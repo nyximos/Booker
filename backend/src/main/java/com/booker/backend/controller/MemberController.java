@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,8 +47,15 @@ public class MemberController {
     }
 
     @PostMapping("/join/social")
-    public Message socialJoin(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody SocialJoinDTO socialJoinDTO) {
+    public Message socialJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestBody SocialJoinDTO socialJoinDTO) {
         Message message = memberService.socialJoin(principalDetails, socialJoinDTO);
-        return  message;
+        return message;
+    }
+
+    @GetMapping("/join/email")
+    public Message checkEmail(@RequestParam String email) {
+        Message message = memberService.checkEmail(email);
+        return message;
     }
 }

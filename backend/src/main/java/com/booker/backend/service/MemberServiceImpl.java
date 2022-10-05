@@ -9,6 +9,7 @@ import com.booker.backend.dto.response.Message;
 import com.booker.backend.dto.response.StatusEnum;
 import com.booker.backend.repository.MemberRepository;
 import com.booker.backend.service.interfaces.MemberService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,11 +25,15 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    @Transactional
     public Message join(JoinDTO dto) {
 
         Member member = Member.builder()
-                .email(dto.getUsername())
+                .username("local_" + dto.getEmail())
+                .email(dto.getEmail())
                 .password(createEncPassword(dto.getPassword()))
+                .name(dto.getName())
+                .nickname(dto.getNickname())
                 .role(MemberRole.ROLE_USER)
                 .build();
 
@@ -41,9 +46,20 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public Message socialJoin(PrincipalDetails principalDetails, SocialJoinDTO socialJoinDTO) {
         Member member = memberRepository.findByUsername(principalDetails.getUsername());
-        member.joinSocialAccount(socialJoinDTO.getNickname(),createEncPassword(socialJoinDTO.getPassword()));
+        member.joinSocialAccount(socialJoinDTO.getNickname(),
+                createEncPassword(socialJoinDTO.getPassword()));
 
         return new Message(StatusEnum.OK, "성공");
+    }
+
+    @Override
+    public Message checkEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return new Message(StatusEnum.OK, email);
+        } else {
+            return new Message(StatusEnum.BAD_REQUEST, "이미 등록되어 있는 이메일입니다.");
+        }
     }
 
     private String createEncPassword(String password) {

@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication){
+            Authentication authentication) {
         String targetUrl = "";
         try {
             response.setStatus(HttpServletResponse.SC_OK);

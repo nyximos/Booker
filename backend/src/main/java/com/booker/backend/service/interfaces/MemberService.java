@@ -10,4 +10,6 @@ public interface MemberService {
     Message join(JoinDTO dto);
 
     Message socialJoin(PrincipalDetails principalDetails, SocialJoinDTO socialJoinDTO);
+
+    Message checkEmail(String email);
 }

@@ -25,7 +25,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         this.attributes = attributes;
     }
 
-    public Member getMember(){
+    public Member getMember() {
         return member;
     }
 
